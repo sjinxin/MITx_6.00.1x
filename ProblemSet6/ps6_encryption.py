@@ -100,7 +100,7 @@ def buildCoder(shift):
     returns: dict
     """
     ### TODO.
-    return "Not yet implemented." # Remove this comment when you code the function
+    return dict(zip(string.ascii_letters , (string.ascii_lowercase[shift:] + string.ascii_lowercase[:shift] + string.ascii_uppercase[shift:] + string.ascii_uppercase[:shift])))
 
 def applyCoder(text, coder):
     """
@@ -111,7 +111,7 @@ def applyCoder(text, coder):
     returns: text after mapping coder chars to original text
     """
     ### TODO.
-    return "Not yet implemented." # Remove this comment when you code the function
+    return "".join([coder.get(letter, letter) for letter in text])
 
 def applyShift(text, shift):
     """
@@ -126,8 +126,7 @@ def applyShift(text, shift):
     """
     ### TODO.
     ### HINT: This is a wrapper function.
-    return "Not yet implemented." # Remove this comment when you code the function
-
+    return applyCoder(text, buildCoder(shift))
 #
 # Problem 2: Decryption
 #
@@ -139,7 +138,21 @@ def findBestShift(wordList, text):
     returns: 0 <= int < 26
     """
     ### TODO
-    return "Not yet implemented." # Remove this comment when you code the function
+    max_num = 0
+    best_shift = 0
+    for shift in range(26):
+	n = 0
+	for w in applyShift(text,shift).split(' '):
+		n += isWord(wordList,w)	
+	if(n > max_num) : 
+		max_num = n
+		best_shift = shift
+    return best_shift
+
+
+
+
+
 
 def decryptStory():
     """
@@ -151,7 +164,7 @@ def decryptStory():
     returns: string - story in plain text
     """
     ### TODO.
-    return "Not yet implemented." # Remove this comment when you code the function
+    return applyShift(getStoryString(),findBestShift(loadWords(),getStoryString()))
 
 #
 # Build data structures used for entire session and run encryption
@@ -159,9 +172,9 @@ def decryptStory():
 
 if __name__ == '__main__':
     # To test findBestShift:
-    wordList = loadWords()
-    s = applyShift('Hello, world!', 8)
-    bestShift = findBestShift(wordList, s)
-    assert applyShift(s, bestShift) == 'Hello, world!'
+    #wordList = loadWords()
+    #s = applyShift('Hello, world!', 8)
+    #bestShift = findBestShift(wordList, s)
+    #assert applyShift(s, bestShift) == 'Hello, world!'
     # To test decryptStory, comment the above four lines and uncomment this line:
-    #    decryptStory()
+    print decryptStory()
